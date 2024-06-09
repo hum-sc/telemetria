@@ -208,10 +208,6 @@ void setup(void) {
   server.on("/", handleRoot);
   server.on("/humedad", handleHumidity);
 
-  server.on("/inline", []() {
-    server.send(200, "text/plain", "this works as well");
-  });
-
   server.on("/accion", HTTP_POST, handleAccion);
 
 
