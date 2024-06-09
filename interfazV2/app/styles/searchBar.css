@@ -1,0 +1,10 @@
+.searchBar{
+    display: flex;
+    flex-direction: row;
+    max-width: 500px;
+    width: 100%;
+}
+
+.searchBar .inputMenu{
+    width: 100%;
+}

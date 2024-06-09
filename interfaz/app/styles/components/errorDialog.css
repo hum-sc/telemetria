@@ -1,0 +1,10 @@
+.errorDialog{
+    width: fit-content;
+    height: fit-content;
+    padding: 0px 24px;
+    text-align: center;
+    background-color: var(--md-sys-color-error-container);
+    color: var(--md-sys-color-on-error-container);
+    align-items: center;
+    border-radius: 28px;
+}

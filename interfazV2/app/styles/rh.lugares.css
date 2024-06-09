@@ -1,0 +1,48 @@
+.infoLugar{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    min-width: none;
+    min-height: none;
+    border-radius: 16px;
+    padding: 10px 24px 24px 24px;
+    background-color: var(--md-sys-color-surface-container-lowest); 
+}
+
+section{
+    display: grid;
+    max-height: 100%;
+    
+    width: 100%;
+    grid-template-columns: repeat(4, calc( 33% - 16px));
+    grid-gap: 24px;
+    grid-auto-flow: row dense;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.infoLugar .row{
+    justify-content: space-around;
+    gap: auto;
+}
+
+.infoLugar .informacion.line{
+    width: 100%;
+    max-width: 100%;
+    justify-content: flex-start;
+    text-overflow: ellipsis;
+}
+
+.informacion.line{
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.informacion.line p, .informacion.line label{
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

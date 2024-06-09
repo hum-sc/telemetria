@@ -1,0 +1,52 @@
+.fab{
+    box-shadow: var(--md-sys-elevation-shadow-level3);
+    position: absolute;
+    height: 56px;
+    width: 56px;
+    padding: 0px;
+    bottom: 0;
+    right: 0;
+    margin: 16px;
+    border-radius: 16px;
+}
+.fab .material-symbols-outline{
+    font-size: 28;
+}
+
+.fab:hover{
+    box-shadow: var(--md-sys-elevation-shadow-level4);
+}
+
+.fab:focus .state-layer{
+    background-color: currentColor;
+    opacity: 0;
+}
+
+.fab.extended{
+    width: fit-content;
+    height: fit-content;
+    min-width: fit-content;
+    padding: 16px 20px 16px 16px;
+    border-radius: 16px;
+   
+}
+
+.fab.primary{
+    background-color: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.fab.surface{
+    background-color: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-primary);
+}
+
+.fab.secondary{
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.fab.tertiary{
+    background-color: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+}

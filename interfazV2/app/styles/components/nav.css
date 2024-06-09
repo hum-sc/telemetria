@@ -1,0 +1,83 @@
+nav{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0px;
+    padding: 12px;
+    background-color: var(--md-sys-color-surface-container-lowest);
+    color: var(--md-sys-color-on-surface-variant);
+    height: 100%;
+    
+    max-width: 300px;
+    min-width: 200pxs;
+    width: 16vw;
+    border-radius: 16px;
+    font-weight: 700;
+}
+
+nav .top{
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: 100%;
+}
+
+
+
+nav h1{
+    display: flex;
+    align-items: center;
+    height: 56px;
+    width: fit-content;
+    margin: 0;
+    padding: 8px 8px 8px 16px;
+    vertical-align: center;
+}
+
+a.navItem{
+    background-color: var(--md-sys-color-surface-container-lowest);
+    border-radius: 100px;
+    border: none;
+    color: var(--md-sys-color-on-surface-variant);
+
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+
+    padding: 16px;
+    
+    height: 56;
+    width: 100%;
+    
+    align-items: center;
+    text-decoration: none;
+
+    transition: all 0.2s ease-in-out;
+
+}
+a.navItem p{
+    margin: 0;
+}
+
+a.navItem:hover,
+a.navItem:focus{
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface);
+    border-radius: 8px;
+    outline: none;
+}
+
+a.navItem.selected{
+    background-color: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-surface);
+    border-radius: 100px;
+}
+
+a.navItem:active{
+    background-color: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+    border-radius: 100px;
+    border: none;
+    outline: none;
+}

@@ -1,0 +1,116 @@
+.informacion{
+    display: flex;
+    flex-direction: column;
+    padding: 12px 24px;
+    border-radius: 16px;
+    height: fit-content;
+    width: fit-content;
+    width: fit-content;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.informacion.line{
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+    justify-content: space-between;
+    padding: 6px 24px;
+    border-radius: 50vh;
+    gap: 10px;
+    height: fit-content;
+    width: fit-content;
+}
+
+
+.informacion.filled{
+    background-color: var(--md-sys-color-surface-container);
+}
+.informacion.transparent{
+    background-color: transparent;
+}
+
+
+
+.informacion label, .informacion p{
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    overflow-wrap: break-word;
+}
+
+.informacion label{
+    color: var(--md-sys-color-outline);
+}
+
+.informacion p{
+    color: var(--md-sys-color-on-surface);
+}
+
+.informacion.cantidad.pequeño, .informacion.cantidad.mediano{
+    padding: 6px 24px;
+    max-width: 100%;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 16px;
+    align-items: flex-end;
+}
+
+.informacion.cantidad.grande{
+    height:100%;
+    min-height: fit-content;
+    min-width:150px;
+    width: 100%;
+
+    justify-content: center;
+}
+
+.informacion.dinero.grande{
+    gap:-10px;
+}
+
+.informacion.dinero.positivo{
+    background-color: var(--md-sys-color-ok-container);
+}
+
+.informacion.dinero.positivo p{
+    color: var(--md-sys-color-on-ok-container);
+}
+
+.informacion.dinero.positivo label{
+    color: var(--md-sys-color-ok);
+}
+
+.informacion.dinero.negativo{
+    background-color: var(--md-sys-color-error-container);
+}
+
+.informacion.dinero.negativo p{
+    color: var(--md-sys-color-on-error-container);
+}
+
+.informacion.dinero.negativo label{
+    color: var(--md-sys-color-error);
+}
+
+
+.infoLugar{
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+a.infoLugar:active{
+    background-color: var(--md-sys-color-surface-container-highest);
+    color: var(--md-sys-color-on-surface);
+    border-radius: 50px;
+    border: none;
+    outline: none;
+}
+
+a.infoLugar:hover,
+a.infoLugar:focus{
+    background-color: var(--md-sys-color-surface-variant);
+    color: var(--md-sys-color-on-surface);
+    border-radius: 8px;
+    outline: none;
+}

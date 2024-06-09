@@ -1,0 +1,45 @@
+.overlayBackground{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    backdrop-filter: blur(3px);
+}
+
+.overlay h2{
+    margin: 0;
+}
+
+.overlay{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    background-color: var(--md-sys-color-surface-container-lowest);
+    width: fit-content;
+    height: fit-content;
+    position: absolute;
+
+    padding: 24px;
+    border-radius: 16px;
+
+    box-shadow: var(--md-sys-elevation-shadow-level4);
+
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.overlay .column, .overlay .row{
+    background-color: inherit;
+    overflow:visible;
+}
+
+.overlay .buttons{
+    align-items: end;
+    justify-content: flex-end;
+}

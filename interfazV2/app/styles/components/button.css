@@ -1,0 +1,179 @@
+button{
+   
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    appearance: none;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    position: relative;
+    width: fit-content;
+    height: 40px;
+    
+    padding: 10px 24px 10px 16px;
+    gap: 8px;
+    border-radius: 100px;
+    border: none;
+    transition: opacity 0.2s ease-in-out;
+}
+
+button.no-label{
+    padding: 10px 10px;
+}
+
+button .state-layer{
+    opacity: var(--md-sys-opacity-0);
+}
+
+
+button  .material-symbols-outlined.button{
+    font-size: 18px;
+}
+
+button p{
+    margin: 0;
+}
+
+
+button:hover .state-layer{
+    background-color: currentColor;
+    opacity: var(--md-sys-opacity-1);
+}
+
+button:focus{
+    outline: none;
+}
+
+button:active .state-layer{
+    opacity: var(--md-sys-opacity-4);
+}
+
+button:disabled{
+    cursor: not-allowed;
+    background-color: var(--md-sys-color-disabled-container);
+    color: var(--md-sys-color-on-surface);
+    box-shadow: none;
+}
+button:disabled p{
+    opacity: .38;
+    color: var(--md-sys-color-on-surface);
+}
+
+button:focus .state-layer{
+    background-color: currentColor;
+    opacity: var(--md-sys-opacity-2);
+}
+
+
+button.filled.primary {
+    color: var(--md-sys-color-on-primary);
+}
+
+
+button.filled:hover{
+    box-shadow: var(--md-sys-elevation-shadow-level1);
+} 
+button.filled:focus{
+    border: none;
+    box-shadow: var(--md-sys-elevation-shadow-level2);
+}
+button.filled:disabled{
+    background-color:var(--md-sys-color-disabled-container);
+}
+
+button.outlined{
+
+    background-color: transparent;
+    border: 1px solid currentColor;
+}
+
+button.outlined.primary{
+    color: var(--md-sys-color-primary);
+}
+button.outlined.secondary{
+    color: var(--md-sys-color-secondary);
+}
+button.outlined.tertiary{
+    color: var(--md-sys-color-tertiary);
+}
+
+button.outlined.error{
+    color: var(--md-sys-color-error);
+}
+
+button.outlined:focus{
+    border-color: currentColor;
+
+}
+button.outlined:active{
+    border-color: var(--md-sys-color-outline);
+}
+button.outlined:active .state-layer{
+    background-color: currentColor;
+    opacity: var(--md-sys-opacity-3);
+}
+
+button.text{
+    background-color: transparent;
+    border: none;
+}
+
+button.text.primary{
+    color: var(--md-sys-color-primary);
+}
+button.text.secondary{
+    color: var(--md-sys-color-secondary);
+}
+button.text.tertiary{
+    color: var(--md-sys-color-tertiary);
+}
+
+
+button.text:active .state-layer{
+    background-color: currentColor;
+    opacity: var(--md-sys-opacity-3 );
+}
+
+button.elevated{
+    color: var(--md-sys-color-primary);
+    background-color: var(--md-sys-color-surface-lowest);
+    box-shadow: var(--md-sys-elevation-shadow-level1);
+}
+
+button.elevated:hover{
+    background-color: (--md-sys-color-surface-low);
+    box-shadow: var(--md-sys-elevation-shadow-level2);
+}
+
+button.elevated:focus{
+    box-shadow: var(--md-sys-elevation-shadow-level4);
+}
+button.elevated:active{
+    box-shadow: var(--md-sys-elevation-shadow-level3);
+}
+
+button.elevated.primary .state-layer{
+    background-color: var(--md-sys-color-primary);
+    opacity: var(--md-sys-opacity-1);
+}
+
+
+button.elevated:hover .state-layer{
+    opacity: var(--md-sys-opacity-2);
+}
+
+button.elevated:focus .state-layer{
+    opacity: var(--md-sys-opacity-3);
+}
+
+button.elevated:active .state-layer{
+    background-color: currentColor;
+    opacity: var(--md-sys-opacity-4);
+}
+
+

@@ -1,0 +1,17 @@
+.hero{
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    width: 100%;
+    gap:10px;
+    align-items: center;
+    justify-content: space-between;
+}
+.hero .dataContainer{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    height: 60px;
+    width: fit-content ;
+}

@@ -1,0 +1,30 @@
+select{
+   
+    background-color: inherit;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 4px;
+    color: var(--md-sys-color-on-surface);
+    width: fit-content;
+    height: 198px;
+    cursor: pointer;
+    padding: 0 16px;
+}
+
+select:focus{
+    outline: none;
+    border: 1px solid var(--md-sys-color-primary);
+}
+
+select option{
+    width: 100%;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--md-sys-color-outline);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+select option:hover{
+    background-color: var(--md-sys-color-surface-container);
+    border: none;
+    border-radius: 8px;
+}
