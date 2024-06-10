@@ -45,36 +45,27 @@ export async function registrarSensor(data:{
 
 export async function getData() {
     let sensores = await prisma.sensor.findMany();
-    let mediciones: { [key: number]: number[]; } = {};
     let medidas: { [key: number]: string; } = {};
-    let labels: { [key: number]: string[]; } = {};
+    let labels: { [key: number]: string; } = {};
     for (const sensor of sensores) {
-        // mediciones de los ultimos 5 minutos agrupadas por 5 SEGUNDOS
-        let medicion = await prisma.medicion.findMany({
+        const ultimaMedicion = await prisma.medicion.findFirst({
             where: {
-                sensorId: sensor.id,
-                timestamp: {
-                    gte: new Date(Date.now() - timeLimit)
-                }
-            },
-            select: {
-                valor: true,
-                timestamp: true
+                sensorId: sensor.id
             },
             orderBy: {
-                timestamp: "asc"
+                timestamp: 'desc'
             }
         });
+        
 
-        mediciones[sensor.id] = medicion.map(m => m.valor);
         medidas[sensor.id] = sensor.unidadMedida;
-        labels[sensor.id] = medicion.map(m => m.timestamp.toLocaleTimeString());
+        //Sin am ni pm
+        labels[sensor.id] = ultimaMedicion?.timestamp.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit',second:'2-digit' }) || "Sin datos";
     }
 
 
     let data = {
         sensores,
-        mediciones,
         medidas,
         labels
     };

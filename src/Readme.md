@@ -30,6 +30,8 @@ en /src/esp32server se encuentra el firmware,
 
 Cada sensor ejecuta un servidor http
 
+
+
 ## Contribución
 
 Si deseas contribuir a este proyecto, sigue los siguientes pasos:

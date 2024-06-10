@@ -5,10 +5,12 @@
 #include <ArduinoJson.h>
 #include <DHT.h>
 #include <EasyBuzzer.h>
+#include "time.h"
 #define dht_pin 4
 #define DHTTYPE DHT11
 #define led 16
 #define buzzer 21
+
 int duracionTono = 250;
 int fMin = 2000;
 int fMax = 4000;
@@ -30,24 +32,52 @@ const char* unidadesTemparatura = "°C";
 const char* unidadesHumedad = "%";
 time_t current_time;
 
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 0;
+const int daylightOffset_sec = 3600;
+
+int Do = 261;
+int Re = 293;
+int Mi = 329;
+int Fa = 349;
+int Sol = 392;
+int La = 440;
+int Si = 493;
+
+int negra = 250;
+int mediaNegra = negra/2;
+int blanca = 500;
+int retardo = 3000;
+
 WebServer server(80);
 
-void sonido(){
-  for (int i =fMin; i < fMax; i++){
-    tone(buzzer, i, duracionTono);
-  }
-  
-  for (int i =fMax; i > fMin; i--){
-    tone(buzzer, i, duracionTono);
-  }
+void nota(int nota, int duracion){
+  EasyBuzzer.singleBeep(nota, duracion);
+  delay(duracion);
+  EasyBuzzer.stopBeep();
+  delay(30);
 }
 
+
+void cancion(){
+  for (int i = 0; i < duracionAlerta; i++){
+    nota(La, negra);
+    delay(mediaNegra);
+  }
+
+}
+
+void cancionPeligro(){
+  for (int i = 0; i < duracionPeligro; i++){
+    nota(Si, negra);
+    delay(mediaNegra);
+  }
+}
 
 // esta funcion regresa la medida del sensor, se queda sin implementar
 
 char* getTemperature(){
   temperature = dht.readTemperature(false);
-  Serial.println(temperature);
   // convierte la medida a un char*
   char* medidaChar = (char*)malloc(10);
   dtostrf(temperature, 4, 2, medidaChar);
@@ -56,7 +86,6 @@ char* getTemperature(){
 
 char* getHumidity(){
   humidity = dht.readHumidity();
-  Serial.println(humidity);
   // convierte la medida a un char*
   char* medidaChar = (char*)malloc(10);
   dtostrf(humidity, 4, 2, medidaChar);
@@ -67,7 +96,13 @@ char* getHumidity(){
 // Regresa la medida de temperatura, y las unidades en un formato json
 void handleRoot() {
   analogWrite(led, 255);
-  current_time = time(nullptr);
+
+  // obtiene la hora actual con time.h
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Failed to obtain time");
+  }else Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  current_time = mktime(&timeinfo);
   char* medida = getTemperature();
   String message = "{\"valor\": ";
   message += medida;
@@ -82,7 +117,11 @@ void handleRoot() {
 
 void handleHumidity() {
   analogWrite(led, 255);
-    current_time = time(nullptr);
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Failed to obtain time");
+  }else Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+  current_time = mktime(&timeinfo);
   char* medida = getHumidity();
   String message = "{\"valor\": ";
   message += medida;
@@ -115,8 +154,7 @@ void fadeOut(int duration){
 }
 
 void handleAccion(){
-
-  digitalWrite(led, 1);
+  
   // Lee el cuerpo de la petición
   String body = server.arg("plain");
   // Parsea el json
@@ -129,24 +167,21 @@ void handleAccion(){
     digitalWrite(led, 0);
     return;
   }
+  
   // Obtiene los valores de accion y tiempo
   String accion = doc["accion"];
   int tiempo = doc["tiempo"];
   // Realiza la acción
   if(accion == "alerta"){
+    server.send(200, "application/json", "{\"message\": \"success\"}");
     // Realiza la notificación
-    for (int i = 0; i < duracionAlerta; i++){
-      sonido();
-      delay(delayAlerta);
-    }
+    cancion();
     
     Serial.println("Notificacion");
   }else if(accion == "peligro"){
+    server.send(200, "application/json", "{\"message\": \"success\"}");
     // Realiza la alerta
-    for (int i = 0; i < duracionPeligro; i++){
-      sonido();
-      delay(delayPeligo);
-    }
+    cancion();
     Serial.println("Alerta");
   }else{
     server.send(400, "application/json", "{\"error\": \"bad request\"}");
@@ -154,7 +189,7 @@ void handleAccion(){
     return;
   }
   // Regresa un mensaje de exito
-  server.send(200, "application/json", "{\"message\": \"success\"}");
+ 
   digitalWrite(led, 0);
 }
 
@@ -178,8 +213,10 @@ void handleNotFound() {
 void setup(void) {
   pinMode(led, OUTPUT);
   pinMode(dht_pin, INPUT);
-  
+
   dht.begin();
+
+  EasyBuzzer.setPin(buzzer);
 
   digitalWrite(led, 0);
   Serial.begin(115200);
@@ -200,7 +237,13 @@ void setup(void) {
   Serial.println(WiFi.localIP());
 
   // Configure the current time
-  configTime(0, 0, "pool.ntp.org", "time.nist.gov");
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  Serial.println("Configurando hora");
+  struct tm timeinfo;
+  if(!getLocalTime(&timeinfo)){
+    Serial.println("Failed to obtain time");
+  }else Serial.println(&timeinfo, "%A, %B %d %Y %H:%M:%S");
+
   if (MDNS.begin(host)) {
     Serial.println("MDNS responder started");
   }
@@ -209,15 +252,17 @@ void setup(void) {
   server.on("/humedad", handleHumidity);
 
   server.on("/accion", HTTP_POST, handleAccion);
-
+  server.on("/humedad/accion", HTTP_POST, handleAccion);
 
   server.onNotFound(handleNotFound);
 
   server.begin();
   Serial.println("HTTP server started");
+
 }
 
 void loop(void) {
+  EasyBuzzer.update();
   while (WiFi.status() != WL_CONNECTED)
   {
     fadeIn(2500);

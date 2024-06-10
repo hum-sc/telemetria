@@ -94,56 +94,85 @@ async function getMedicion(url){
 }
 
 async function sendAction(url, action){
+  // Emite un sonido
+
+  let data = JSON.stringify({
+      "accion": action
+  });
   let config = {
-      method: 'post',
-      maxBodyLength: Infinity,
-      url:"http://"+url+"/accion",
-      headers: { },
-      data: {
-          accion: action
-      }
+    method: 'post',
+    maxBodyLength: Infinity,
+    url:"http://"+url+"/accion",
+    headers: { 
+      'Content-Type': 'application/json'
+    },
+    data : data
   };
+  try{
+    const r = await axios.request(config)
+    r.status === 200 ? console.log("Accion enviada") : console.log("Error al enviar la accion");
+    
+  } catch(e){
+    console.log("Error al enviar la accion");
+  }
+
+
 }
 
 async function monitorea(){
+
+  
   try{
     const sensores = await prisma.sensor.findMany();
-    for (const sensor of sensores){
+    for (let sensor of sensores){
+      let isNotified = sensor.alerta || sensor.peligro;
         console.log("Monitoreando sensor: ", sensor.id);
+        console.log("Notificado ", isNotified);
+        try{
+          
         const medicion = await getMedicion(sensor.url);
+
+        const alerta = medicion.data.valor >= sensor.umbralAlerta && !sensor.peligro && medicion.data.valor < sensor.umbralPeligro;
+        const peligro = medicion.data.valor >= sensor.umbralAlerta;
+
+        console.log("Valor: ", medicion.data.valor);
+        console.log("Alerta: ", alerta);
+        console.log("Peligro: ", peligro);
         if (medicion.status === 200){
-          await prisma.sensor.update({
+          let sensor2 =  await prisma.sensor.update({
             where: {
                 id: sensor.id
             },
             data: {
-                online: true
+                online: true,
+                unidadMedida: medicion.data.unidades,
+                valorActual: medicion.data.valor,
+                alerta:alerta,
+                peligro: peligro,
             }
           });
-
-          if (medicion.data.valor >= sensor.umbralPeligro){
-            sendAction(sensor.url, "peligro")
-          } else if (medicion.data.valor >= sensor.umbralAlerta){
-            sendAction(sensor.url, "alerta")
-          }
-
+          // el timestamp esta en segundos
+          let timestamp = new Date(medicion.data.timestamp * 1000);
+          console.log("Timestamp: ", timestamp.toLocaleString());
           await prisma.medicion.create({
             data: {
               valor: medicion.data.valor,
-              sensorId: sensor.id
-            }
-          });
-
-          await prisma.sensor.update({
-            where: {
-                id: sensor.id
-            },
-            data: {
-                unidadMedida: medicion.data.unidades,
-                valorActual: medicion.data.valor
+              sensorId: sensor.id,
+              // El timestamp generado por el sensor
+              
+              timestamp: timestamp
             }
           });
           console.log("Medicion: ", medicion.data.valor, "Agregada");
+          if(peligro && !isNotified){
+            isNotified = true;
+            sendAction(sensor.url, "peligro");
+          }
+          if(alerta && !isNotified){
+            isNotified = true;
+            sendAction(sensor.url, "alerta");
+          }
+          console.log("Sensor: ", sensor.id, " monitoreado");
         } else{
           await prisma.sensor.update({
               where: {
@@ -161,9 +190,30 @@ async function monitorea(){
             }
           });
         }
+      } catch(e){
+        console.log("Error al monitorear el sensor");
+        await prisma.sensor.update({
+            where: {
+                id: sensor.id
+            },
+            data: {
+                online: false
+            }
+        });
+
+        await prisma.medicion.create({
+          data: {
+            valor: sensor.valorActual,
+            sensorId: sensor.id
+          }
+        });
+      }
     }
+    
+    
   }
   catch(e){
+    console.log(e)
     console.log("Error al obtener los sensores");
   }
 }

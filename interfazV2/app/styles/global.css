@@ -146,8 +146,9 @@ main{
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    gap: 24px;
-    width: 100%;
+    gap: 5px;
+    width: fit-content;
+    min-width: 20%;
     height: 100%;
     border-radius: 16px;
     padding: 30px 24px;
@@ -209,7 +210,7 @@ hr{
 
 .grafico{
     display: flex;
-    height: 100%;
+    height: 80%;
     min-height: fit-content;
     min-width: 150px;
     width: 100%;
@@ -225,6 +226,54 @@ hr{
     max-width: 30%;
 }
 
-.sensor.card{
-    height: 600px;
+
+
+.sensor .errorDialog{
+    height: 100%;
+    /* Center vertical */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.sensor .errorDialog p{
+    max-height: 100%;
+    text-align: center;
+    /*just the text, no spaces around*/
+    margin: auto;
+    padding: 0;
+
+    
+}
+.card .row{
+    align-items: center;
+    justify-content: space-between;
+}
+
+.card.sensor{
+    max-height: calc(50vh - 10px);
+    max-width: 30%;
+    min-width: 200px;
+}
+
+main .row{
+    width: 100%;
+    justify-content: center;
+}
+
+main section .row{
+    overflow: visible;
+    max-height: none;
+}
+main section{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }

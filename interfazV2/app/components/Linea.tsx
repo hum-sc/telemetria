@@ -48,6 +48,7 @@ export default function GraficaLineas(props:{
     dataSets:dataSet[],
     labels:string[]
     fill?:boolean,
+    noLabels?:boolean
 }) {
     const [lineaColores, setLineaColores] = useState<string[]>([]);
     const [data, setData] = useState<{
@@ -66,9 +67,10 @@ export default function GraficaLineas(props:{
         plugins: {
             legend:{
                 position:'bottom' as const,
+                display: !props.noLabels,
             },
             title:{
-                display:true,
+                display:false,
                 text:props.title,
             },
             
@@ -80,6 +82,8 @@ export default function GraficaLineas(props:{
             }
         }, animation:{
             duration: 0,
+        },legend:{
+            display:false
         }
     }
     useEffect(() => {
